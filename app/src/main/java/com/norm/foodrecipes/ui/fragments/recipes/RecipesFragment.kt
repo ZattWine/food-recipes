@@ -1,12 +1,14 @@
 package com.norm.foodrecipes.ui.fragments.recipes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.norm.foodrecipes.adapters.RecipesAdapter
 import com.norm.foodrecipes.databinding.FragmentRecipesBinding
@@ -14,6 +16,7 @@ import com.norm.foodrecipes.util.NetworkResult
 import com.norm.foodrecipes.viewmodels.MainViewModel
 import com.norm.foodrecipes.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -39,13 +42,38 @@ class RecipesFragment : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         setupRecyclerView()
-        requestApiData()
+        loadRecipes()
 
         return binding.root
     }
 
+    /** setting up the recipes recycler view */
+    private fun setupRecyclerView() {
+        binding.recipesRecyclerView.adapter = mAdapter
+        binding.recipesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        showShimmerEffect()
+    }
+
+    /** load recipes data from local or remote */
+    private fun loadRecipes() {
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observe(viewLifecycleOwner, { rows ->
+                if (rows.isNotEmpty()) {
+                    Log.d("RecipesFragment", "readRecipes() called!")
+
+                    // must have one row only.
+                    mAdapter.setData(rows[0].foodRecipe)
+                    hideShimmerEffect()
+                } else {
+                    requestApiData()
+                }
+            })
+        }
+    }
+
     /** request api data */
     private fun requestApiData() {
+        Log.d("RecipesFragment", "requestApiData() called!")
         mainViewModel.getRecipes(recipeViewModel.applyQueries())
         mainViewModel.recipesResponse.observe(viewLifecycleOwner, { response ->
             when (response) {
@@ -57,6 +85,7 @@ class RecipesFragment : Fragment() {
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
+                    loadDataFromCache()
                     Toast.makeText(
                         requireContext(),
                         response.message.toString(),
@@ -70,11 +99,15 @@ class RecipesFragment : Fragment() {
         })
     }
 
-    /** setting up the recipes recycler view */
-    private fun setupRecyclerView() {
-        binding.recipesRecyclerView.adapter = mAdapter
-        binding.recipesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        showShimmerEffect()
+    /** load data from cache */
+    private fun loadDataFromCache() {
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observe(viewLifecycleOwner, { rows ->
+                if (rows.isNotEmpty()) {
+                    mAdapter.setData(rows[0].foodRecipe)
+                }
+            })
+        }
     }
 
     /** show shimmer recycler effect */
