@@ -1,4 +1,4 @@
-package com.norm.foodrecipes.utils
+package com.norm.foodrecipes.util
 
 class Constants {
     companion object {

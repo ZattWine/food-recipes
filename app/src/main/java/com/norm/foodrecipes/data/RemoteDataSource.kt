@@ -1,5 +1,6 @@
-package com.norm.foodrecipes
+package com.norm.foodrecipes.data
 
+import com.norm.foodrecipes.data.network.FoodRecipesApi
 import com.norm.foodrecipes.models.FoodRecipe
 import retrofit2.Response
 import javax.inject.Inject
