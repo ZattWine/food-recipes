@@ -10,20 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.norm.foodrecipes.adapters.RecipesAdapter
 import com.norm.foodrecipes.databinding.FragmentRecipesBinding
-import com.norm.foodrecipes.util.Constants.Companion.API_KEY
-import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_QUERY_DIET
-import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_QUERY_FILL_INGREDIENTS
-import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_QUERY_NUMBER
-import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_QUERY_RECIPE_INFORMATION
-import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_QUERY_TYPE
-import com.norm.foodrecipes.util.Constants.Companion.QUERY_API_KEY
-import com.norm.foodrecipes.util.Constants.Companion.QUERY_DIET
-import com.norm.foodrecipes.util.Constants.Companion.QUERY_FILL_INGREDIENTS
-import com.norm.foodrecipes.util.Constants.Companion.QUERY_NUMBER
-import com.norm.foodrecipes.util.Constants.Companion.QUERY_RECIPE_INFORMATION
-import com.norm.foodrecipes.util.Constants.Companion.QUERY_TYPE
 import com.norm.foodrecipes.util.NetworkResult
 import com.norm.foodrecipes.viewmodels.MainViewModel
+import com.norm.foodrecipes.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +24,7 @@ class RecipesFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var recipeViewModel: RecipeViewModel
     private lateinit var mainViewModel: MainViewModel
     private val mAdapter by lazy {
         RecipesAdapter()
@@ -45,6 +35,7 @@ class RecipesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
+        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         setupRecyclerView()
@@ -55,7 +46,7 @@ class RecipesFragment : Fragment() {
 
     /** request api data */
     private fun requestApiData() {
-        mainViewModel.getRecipes(applyQueries())
+        mainViewModel.getRecipes(recipeViewModel.applyQueries())
         mainViewModel.recipesResponse.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is NetworkResult.Success -> {
@@ -77,19 +68,6 @@ class RecipesFragment : Fragment() {
                 }
             }
         })
-    }
-
-    /** queries preparation to apply on recipes api request */
-    private fun applyQueries(): HashMap<String, String> {
-        val queries: HashMap<String, String> = HashMap()
-        queries[QUERY_NUMBER] = DEFAULT_QUERY_NUMBER
-        queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = DEFAULT_QUERY_TYPE
-        queries[QUERY_DIET] = DEFAULT_QUERY_DIET
-        queries[QUERY_RECIPE_INFORMATION] = DEFAULT_QUERY_RECIPE_INFORMATION
-        queries[QUERY_FILL_INGREDIENTS] = DEFAULT_QUERY_FILL_INGREDIENTS
-
-        return queries
     }
 
     /** setting up the recipes recycler view */
