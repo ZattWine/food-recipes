@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.norm.foodrecipes.adapters.RecipesAdapter
 import com.norm.foodrecipes.databinding.FragmentRecipesBinding
 import com.norm.foodrecipes.util.NetworkResult
+import com.norm.foodrecipes.util.observeOnce
 import com.norm.foodrecipes.viewmodels.MainViewModel
 import com.norm.foodrecipes.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +58,7 @@ class RecipesFragment : Fragment() {
     /** load recipes data from local or remote */
     private fun loadRecipes() {
         lifecycleScope.launch {
-            mainViewModel.readRecipes.observe(viewLifecycleOwner, { rows ->
+            mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { rows ->
                 if (rows.isNotEmpty()) {
                     Log.d("RecipesFragment", "readRecipes() called!")
 
