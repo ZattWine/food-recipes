@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.norm.foodrecipes.R
 import com.norm.foodrecipes.adapters.RecipesAdapter
@@ -26,6 +27,8 @@ class RecipesFragment : Fragment() {
 
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
+
+    private val args by navArgs<RecipesFragmentArgs>()
 
     private lateinit var recipeViewModel: RecipeViewModel
     private lateinit var mainViewModel: MainViewModel
@@ -68,7 +71,7 @@ class RecipesFragment : Fragment() {
     private fun loadRecipes() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { rows ->
-                if (rows.isNotEmpty()) {
+                if (rows.isNotEmpty() && !args.backFromBottomSheet) {
                     Log.d("RecipesFragment", "readRecipes() called!")
 
                     // must have one row only.
