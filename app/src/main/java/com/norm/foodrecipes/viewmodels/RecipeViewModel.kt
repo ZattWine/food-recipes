@@ -2,19 +2,28 @@ package com.norm.foodrecipes.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.norm.foodrecipes.util.Constants
+import com.norm.foodrecipes.util.Constants.Companion.API_KEY
+import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_DIET_TYPE
+import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_MEAL_TYPE
+import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_RECIPES_NUMBER
+import com.norm.foodrecipes.util.Constants.Companion.QUERY_API_KEY
+import com.norm.foodrecipes.util.Constants.Companion.QUERY_DIET
+import com.norm.foodrecipes.util.Constants.Companion.QUERY_FILL_INGREDIENTS
+import com.norm.foodrecipes.util.Constants.Companion.QUERY_NUMBER
+import com.norm.foodrecipes.util.Constants.Companion.QUERY_RECIPE_INFORMATION
+import com.norm.foodrecipes.util.Constants.Companion.QUERY_TYPE
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
 
     /** queries preparation to apply on recipes api request */
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
-        queries[Constants.QUERY_NUMBER] = Constants.DEFAULT_QUERY_NUMBER
-        queries[Constants.QUERY_API_KEY] = Constants.API_KEY
-        queries[Constants.QUERY_TYPE] = Constants.DEFAULT_QUERY_TYPE
-        queries[Constants.QUERY_DIET] = Constants.DEFAULT_QUERY_DIET
-        queries[Constants.QUERY_RECIPE_INFORMATION] = Constants.DEFAULT_QUERY_RECIPE_INFORMATION
-        queries[Constants.QUERY_FILL_INGREDIENTS] = Constants.DEFAULT_QUERY_FILL_INGREDIENTS
+        queries[QUERY_NUMBER] = DEFAULT_RECIPES_NUMBER
+        queries[QUERY_API_KEY] = API_KEY
+        queries[QUERY_TYPE] = DEFAULT_MEAL_TYPE
+        queries[QUERY_DIET] = DEFAULT_DIET_TYPE
+        queries[QUERY_RECIPE_INFORMATION] = "true"
+        queries[QUERY_FILL_INGREDIENTS] = "true"
 
         return queries
     }

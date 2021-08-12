@@ -8,24 +8,26 @@ class Constants {
 
         // API query keys and default values
         const val QUERY_API_KEY = "apiKey"
-
         const val QUERY_NUMBER = "number"
-        const val DEFAULT_QUERY_NUMBER = "50"
-
         const val QUERY_TYPE = "type"
-        const val DEFAULT_QUERY_TYPE = "snack"
-
         const val QUERY_DIET = "diet"
-        const val DEFAULT_QUERY_DIET = "vegan"
-
         const val QUERY_RECIPE_INFORMATION = "addRecipeInformation"
-        const val DEFAULT_QUERY_RECIPE_INFORMATION = "true"
-
         const val QUERY_FILL_INGREDIENTS = "fillIngredients"
-        const val DEFAULT_QUERY_FILL_INGREDIENTS = "true"
 
         // Room Database
         const val DATABASE_NAME = "recipes_db"
         const val RECIPES_TABLE = "recipes"
+
+        // Bottom Sheet and Preferences
+        const val DEFAULT_RECIPES_NUMBER = "50"
+        const val DEFAULT_MEAL_TYPE = "main course"
+        const val DEFAULT_DIET_TYPE = "gluten free"
+
+        const val PREFS_NAME = "food_recipes_prefs"
+        const val PREFS_MEAL_TYPE = "mealType"
+        const val PREFS_MEAL_TYPE_ID = "mealTypeId"
+        const val PREFS_DIET_TYPE = "dietType"
+        const val PREFS_DIET_TYPE_ID = "dietTypeId"
+
     }
 }
