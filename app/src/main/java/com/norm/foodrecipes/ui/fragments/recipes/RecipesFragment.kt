@@ -23,9 +23,6 @@ import kotlinx.coroutines.launch
 class RecipesFragment : Fragment() {
 
     private var _binding: FragmentRecipesBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var recipeViewModel: RecipeViewModel
@@ -34,13 +31,19 @@ class RecipesFragment : Fragment() {
         RecipesAdapter()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
-        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.mainViewModel = mainViewModel
 
         setupRecyclerView()
         loadRecipes()
