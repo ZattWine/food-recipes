@@ -5,4 +5,7 @@
     <string name="recipes">Recipes</string>
     <string name="favorites">Favorites</string>
     <string name="joke">Joke</string>
+    <string name="content_recipes_fab">An icon of restaurant</string>
+    <string name="content_recipes_error">A sad image</string>
+    <string name="no_internet_connection">No Internet Connection</string>
 </resources>
