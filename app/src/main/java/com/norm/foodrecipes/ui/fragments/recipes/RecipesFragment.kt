@@ -50,7 +50,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
 
         setHasOptionsMenu(true)

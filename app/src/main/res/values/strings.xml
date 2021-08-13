@@ -44,4 +44,5 @@
     <string name="gram">Grams</string>
     <string name="consistency">Consistency</string>
     <string name="original">Original</string>
+    <string name="save_to_favorite">Save To Favorite</string>
 </resources>

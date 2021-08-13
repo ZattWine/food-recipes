@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
 import coil.load
 import com.norm.foodrecipes.R
@@ -39,6 +40,7 @@ class OverviewFragment : Fragment() {
         myBundle?.summary.let {
             val summary = Jsoup.parse(it).toString()
             // binding.summaryTextView.text = strSummary
+            binding.summaryWebView.webViewClient = object : WebViewClient() {}
             binding.summaryWebView.loadData(summary, "text/html; charset=utf-8", "UTF-8")
         }
 
