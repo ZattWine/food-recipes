@@ -10,6 +10,7 @@ import coil.load
 import com.norm.foodrecipes.R
 import com.norm.foodrecipes.databinding.FragmentOverviewBinding
 import com.norm.foodrecipes.models.Result
+import com.norm.foodrecipes.util.Constants.Companion.RECIPE_BUNDLE_KEY
 import org.jsoup.Jsoup
 
 class OverviewFragment : Fragment() {
@@ -25,9 +26,12 @@ class OverviewFragment : Fragment() {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
 
         val args = arguments
-        val myBundle: Result? = args?.getParcelable("recipeBundle")
+        val myBundle: Result? = args?.getParcelable(RECIPE_BUNDLE_KEY)
 
-        binding.imageView.load(myBundle?.image)
+        binding.imageView.load(myBundle?.image) {
+            crossfade(600)
+            error(R.drawable.ic_error_placeholder)
+        }
         binding.titleTextView.text = myBundle?.title
         binding.likesTextView.text = myBundle?.aggregateLikes.toString()
         binding.timeTextView.text = myBundle?.readyInMinutes.toString()

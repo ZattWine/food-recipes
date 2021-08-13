@@ -13,6 +13,7 @@ import com.norm.foodrecipes.databinding.ActivityDetailsBinding
 import com.norm.foodrecipes.ui.fragments.ingredients.IngredientsFragment
 import com.norm.foodrecipes.ui.fragments.instructions.InstructionsFragment
 import com.norm.foodrecipes.ui.fragments.overview.OverviewFragment
+import com.norm.foodrecipes.util.Constants.Companion.RECIPE_BUNDLE_KEY
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -40,7 +41,7 @@ class DetailsActivity : AppCompatActivity() {
         titles.add("Instructions")
 
         val resultBundle = Bundle()
-        resultBundle.putParcelable("recipeBundle", args.result)
+        resultBundle.putParcelable(RECIPE_BUNDLE_KEY, args.result)
 
         val adapter = PagerAdapter(resultBundle, fragments, this)
         binding.viewPager.adapter = adapter

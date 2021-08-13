@@ -24,7 +24,9 @@
     <color name="checkedChipTextColor">@color/purple_500</color>
     <color name="chipTextColor">@color/darkGray</color>
 
-    <!-- Custom TabLayout style color -->
     <color name="actionBarBackgroundColor">@color/purple_500</color>
+    <color name="strokeColor">@color/lightMediumGray</color>
+    <color name="cardBackgroundColor">@color/white</color>
+    <color name="titleColor">@color/darker</color>
 
 </resources>
