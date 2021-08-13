@@ -13,12 +13,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FoodRecipes">
+        android:theme="@style/Theme.FoodRecipes"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.DetailsActivity"
             android:exported="true"
             android:label="Details"
-            android:theme="@style/Theme.DetailsActivity"/>
+            android:theme="@style/Theme.DetailsActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
