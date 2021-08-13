@@ -12,6 +12,8 @@ import coil.load
 import com.norm.foodrecipes.R
 import com.norm.foodrecipes.models.Result
 import com.norm.foodrecipes.ui.fragments.recipes.RecipesFragmentDirections
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 class RecipesRowBinding {
     companion object {
@@ -64,6 +66,15 @@ class RecipesRowBinding {
                         view.setColorFilter(ContextCompat.getColor(view.context, R.color.green))
                     }
                 }
+            }
+        }
+
+        @BindingAdapter("noHtmlTags")
+        @JvmStatic
+        fun parseHtmlToString(textView: TextView, html: String) {
+            if (html.isNotEmpty()) {
+                val doc: Document = Jsoup.parse(html)
+                textView.text = doc.text()
             }
         }
     }
