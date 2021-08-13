@@ -3,6 +3,7 @@ package com.norm.foodrecipes.viewmodels
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.norm.foodrecipes.data.DataStoreRepository
 import com.norm.foodrecipes.util.Constants.Companion.API_KEY
@@ -31,12 +32,19 @@ class RecipeViewModel @Inject constructor(
     private var dietType = DEFAULT_DIET_TYPE
 
     var networkStatus = false
+    var backOnline = false
 
     val readMealAndDietType = dataStoreRepository.readMealAndDietType
+    val readBackOnlineStatus = dataStoreRepository.readBackOnlineStatus.asLiveData()
 
     fun saveMealAndDietType(mealType: String, mealTypeId: Int, dietType: String, dietTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveMealAndDietType(mealType, mealTypeId, dietType, dietTypeId)
+        }
+
+    fun saveOnlineBackStatus(backOnline: Boolean) =
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.saveBackOnlineStatus(backOnline)
         }
 
     /** queries preparation to apply on recipes api request */
@@ -64,6 +72,12 @@ class RecipeViewModel @Inject constructor(
     fun showNetworkStatus() {
         if (!networkStatus) {
             Toast.makeText(getApplication(), "No Internet Connection.", Toast.LENGTH_SHORT).show()
+            saveOnlineBackStatus(true)
+        } else if (networkStatus) {
+            if (backOnline) {
+                Toast.makeText(getApplication(), "We're back online.", Toast.LENGTH_SHORT).show()
+                saveOnlineBackStatus(false)
+            }
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -55,15 +56,19 @@ class RecipesFragment : Fragment() {
         binding.mainViewModel = mainViewModel
 
         setupRecyclerView()
-        loadRecipes()
 
-        networkListener = NetworkListener()
+        recipeViewModel.readBackOnlineStatus.observe(viewLifecycleOwner, {
+            recipeViewModel.backOnline = it
+        })
+
         lifecycleScope.launch {
+            networkListener = NetworkListener()
             networkListener.checkNetworkAvailability(requireContext())
                 .collect { status ->
                     Log.d("NetworkListener", "$status")
                     recipeViewModel.networkStatus = status
                     recipeViewModel.showNetworkStatus()
+                    loadRecipes()
                 }
         }
 
