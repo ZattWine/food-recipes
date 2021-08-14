@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.norm.foodrecipes.R
 import com.norm.foodrecipes.adapters.IngredientsAdapter
 import com.norm.foodrecipes.databinding.FragmentIngredientsBinding
 import com.norm.foodrecipes.models.Result
@@ -24,7 +23,7 @@ class IngredientsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentIngredientsBinding.inflate(inflater, container, false)
 

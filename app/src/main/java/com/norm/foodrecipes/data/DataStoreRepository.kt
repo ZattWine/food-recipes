@@ -1,8 +1,9 @@
 package com.norm.foodrecipes.data
 
 import android.content.Context
-import androidx.datastore.DataStore
-import androidx.datastore.preferences.*
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.preferencesDataStore
 import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_DIET_TYPE
 import com.norm.foodrecipes.util.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.norm.foodrecipes.util.Constants.Companion.PREFS_BACK_ONLINE
@@ -12,31 +13,34 @@ import com.norm.foodrecipes.util.Constants.Companion.PREFS_MEAL_TYPE
 import com.norm.foodrecipes.util.Constants.Companion.PREFS_MEAL_TYPE_ID
 import com.norm.foodrecipes.util.Constants.Companion.PREFS_NAME
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-@ActivityRetainedScoped
+// Call it once at the top level of your kotlin file,
+// and access it through this property throughout the rest of your application.
+// This makes it easier to keep your DataStore as a singleton.
+private val Context.dataStore by preferencesDataStore(name = PREFS_NAME)
+
+@ViewModelScoped
 class DataStoreRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
     /** Preferences keys */
     private object PreferenceKeys {
-        val selectedMealType = preferencesKey<String>(PREFS_MEAL_TYPE)
-        val selectedMealTypeId = preferencesKey<Int>(PREFS_MEAL_TYPE_ID)
-        val selectedDietType = preferencesKey<String>(PREFS_DIET_TYPE)
-        val selectedDietTypeId = preferencesKey<Int>(PREFS_DIET_TYPE_ID)
-        val backOnline = preferencesKey<Boolean>(PREFS_BACK_ONLINE)
+        val selectedMealType = stringPreferencesKey(PREFS_MEAL_TYPE)
+        val selectedMealTypeId = intPreferencesKey(PREFS_MEAL_TYPE_ID)
+        val selectedDietType = stringPreferencesKey(PREFS_DIET_TYPE)
+        val selectedDietTypeId = intPreferencesKey(PREFS_DIET_TYPE_ID)
+        val backOnline = booleanPreferencesKey(PREFS_BACK_ONLINE)
     }
 
     /** creating [DataStore] to store preferences data */
-    private val dataStore: DataStore<Preferences> = context.createDataStore(
-        name = PREFS_NAME
-    )
+    private val dataStore: DataStore<Preferences> = context.dataStore
 
     /** save meal and diet type to [dataStore] */
     suspend fun saveMealAndDietType(

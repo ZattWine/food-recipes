@@ -2,7 +2,6 @@ package com.norm.foodrecipes.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.norm.foodrecipes.models.ExtendedIngredient
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 

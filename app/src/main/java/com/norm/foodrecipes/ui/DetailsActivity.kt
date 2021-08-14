@@ -33,6 +33,8 @@ class DetailsActivity : AppCompatActivity() {
     private var recipeSaved = false
     private var savedRecipeId = 0
 
+    private lateinit var menuItem: MenuItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
@@ -55,8 +57,11 @@ class DetailsActivity : AppCompatActivity() {
         val resultBundle = Bundle()
         resultBundle.putParcelable(RECIPE_BUNDLE_KEY, args.result)
 
-        val adapter = PagerAdapter(resultBundle, fragments, this)
-        binding.viewPager.adapter = adapter
+        val pagerAdapter = PagerAdapter(resultBundle, fragments, this)
+        binding.viewPager.apply {
+            isUserInputEnabled = false
+            adapter = pagerAdapter
+        }
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = titles[position]
         }.attach()
@@ -64,8 +69,8 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.details_menu, menu)
-        val menuItem = menu?.findItem(R.id.save_to_favorite_menu)
-        checkSavedRecipe(menuItem!!)
+        menuItem = menu!!.findItem(R.id.save_to_favorite_menu)
+        checkSavedRecipe(menuItem)
         return true
     }
 
@@ -90,8 +95,6 @@ class DetailsActivity : AppCompatActivity() {
                         savedRecipeId = savedRecipe.id
                         recipeSaved = true
                         break
-                    } else {
-                        changeMenuItemIconColor(menuItem, R.color.white)
                     }
                 }
             } catch (e: Exception) {
@@ -133,5 +136,10 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun changeMenuItemIconColor(item: MenuItem, color: Int) {
         item.icon.setTint(ContextCompat.getColor(this, color))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        changeMenuItemIconColor(menuItem, R.color.white)
     }
 }

@@ -1,7 +1,8 @@
 <resources>
 
-    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textColor">@color/white</item>
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="textAllCaps">false</item>
+        <item name="backgroundColor">?attr/colorPrimary</item>
     </style>
 
     <!-- Chip -->
@@ -12,12 +13,12 @@
     </style>
 
     <!-- TabLayout -->
-
-    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout.Colored">
-        <item name="tabIndicatorColor">@color/white</item>
+    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout.PrimarySurface">
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabSelectedTextColor">@color/white</item>
-        <item name="tabTextAppearance">@style/TextAppearance.App.Button</item>
+    </style>
+
+    <style name="Widget.App.ToolBar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
+        <item name="android:elevation">0dp</item>
     </style>
 
 </resources>

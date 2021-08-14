@@ -29,7 +29,7 @@ class FoodJokeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentFoodJokeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -82,7 +82,7 @@ class FoodJokeFragment : Fragment() {
     private fun loadDataFromCache() {
         lifecycleScope.launch {
             mainViewModel.readFoodJoke.observe(viewLifecycleOwner, { rows ->
-                if (rows.isNullOrEmpty()) {
+                if (!rows.isNullOrEmpty()) {
                     binding.foodJokeTextView.text = rows[0].foodJoke.text
                     foodJoke = rows[0].foodJoke.text
                 }

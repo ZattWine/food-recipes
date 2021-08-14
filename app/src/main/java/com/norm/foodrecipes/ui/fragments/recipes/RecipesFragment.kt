@@ -48,7 +48,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
@@ -60,7 +60,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
             recipeViewModel.backOnline = it
         })
 
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             networkListener = NetworkListener()
             networkListener.checkNetworkAvailability(requireContext())
                 .collect { status ->
@@ -113,22 +113,17 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     /** load recipes data from local or remote */
     private fun loadRecipes() {
         lifecycleScope.launch {
-            // todo: handle view's lifecycle owner when view is null
-            try {
-                mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { rows ->
-                    if (rows.isNotEmpty() && !args.backFromBottomSheet) {
-                        Log.d("RecipesFragment", "readRecipes() called!")
+            mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { rows ->
+                if (rows.isNotEmpty() && !args.backFromBottomSheet) {
+                    Log.d("RecipesFragment", "readRecipes() called!")
 
-                        // must have one row only.
-                        mAdapter.setData(rows[0].foodRecipe)
-                        hideShimmerEffect()
-                    } else {
-                        requestApiData()
-                    }
-                })
-            } catch (e: Exception) {
-                Log.d("RecipesFragment", e.message.toString())
-            }
+                    // must have one row only.
+                    mAdapter.setData(rows[0].foodRecipe)
+                    hideShimmerEffect()
+                } else {
+                    requestApiData()
+                }
+            })
         }
     }
 
@@ -143,6 +138,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                     response.data?.let {
                         mAdapter.setData(it)
                     }
+                    recipeViewModel.saveMealAndDietType()
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()

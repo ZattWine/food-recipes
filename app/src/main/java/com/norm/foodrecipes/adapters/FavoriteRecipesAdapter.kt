@@ -59,6 +59,10 @@ class FavoriteRecipesAdapter(
         val currentFavoriteRecipe = favoriteRecipes[position]
         holder.bind(currentFavoriteRecipe)
 
+        // need to re-change the style of unselected item whenever the list scrolling
+        // because of the recycler view behavior
+        saveItemStateOnScroll(holder, currentFavoriteRecipe)
+
         /**
          * Single click listener.
          */
@@ -78,18 +82,26 @@ class FavoriteRecipesAdapter(
          * Long click listener.
          */
         holder.binding.favoriteRecipesRowLayout.setOnLongClickListener {
-            // If not multiSelection, set multiSelection=true
-            // start actionMode and set currentFavRecipe to selection
-            // If multiSelection, set multiSelection=false
             if (!multiSelection) {
                 multiSelection = true
                 fa.startActionMode(this)
                 applySelection(holder, currentFavoriteRecipe)
                 true
             } else {
-                multiSelection = false
-                false
+                applySelection(holder, currentFavoriteRecipe)
+                true
             }
+        }
+    }
+
+    /**
+     * Save selected item state on scrolling.
+     */
+    private fun saveItemStateOnScroll(holder: MyViewHolder, currentRecipe: FavoritesEntity) {
+        if (selectedRecipes.contains(currentRecipe)) {
+            changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.purple_500)
+        } else {
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor)
         }
     }
 
@@ -105,7 +117,7 @@ class FavoriteRecipesAdapter(
             applyActionModeTitle()
         } else {
             selectedRecipes.add(currentRecipe)
-            changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary)
+            changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.purple_500)
             applyActionModeTitle()
         }
     }
@@ -115,11 +127,9 @@ class FavoriteRecipesAdapter(
      */
     private fun changeRecipeStyle(holder: MyViewHolder, backgroundColor: Int, strokeColor: Int) {
         with(holder.binding) {
-
             favoriteRecipesRowLayout.setBackgroundColor(
                 ContextCompat.getColor(fa, backgroundColor)
             )
-
             favoriteRowCardView.strokeColor = ContextCompat.getColor(fa, strokeColor)
         }
     }
@@ -128,6 +138,7 @@ class FavoriteRecipesAdapter(
         when (selectedRecipes.size) {
             0 -> {
                 mActionMode.finish()
+                multiSelection = false
             }
             1 -> {
                 mActionMode.title = "${selectedRecipes.size} item selected"
