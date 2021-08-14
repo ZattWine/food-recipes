@@ -1,6 +1,7 @@
 package com.norm.foodrecipes.data
 
 import com.norm.foodrecipes.data.network.FoodRecipesApi
+import com.norm.foodrecipes.models.FoodJoke
 import com.norm.foodrecipes.models.FoodRecipe
 import retrofit2.Response
 import javax.inject.Inject
@@ -23,5 +24,12 @@ class RemoteDataSource @Inject constructor(
      */
     suspend fun searchRecipes(searchQuery: Map<String, String>): Response<FoodRecipe> {
         return foodRecipesApi.searchRecipes(searchQuery)
+    }
+
+    /**
+     * Get random food joke via [FoodRecipesApi.getFoodJoke]
+     */
+    suspend fun getFoodJoke(apiKey: String): Response<FoodJoke> {
+        return foodRecipesApi.getFoodJoke(apiKey)
     }
 }

@@ -30,7 +30,7 @@ class FavoriteRecipesFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentFavoriteRecipesBinding.inflate(inflater, container, false)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.mainViewModel = mainViewModel
         binding.mAdapter = mAdapter
 

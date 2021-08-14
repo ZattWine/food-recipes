@@ -2,6 +2,7 @@ package com.norm.foodrecipes.data
 
 import com.norm.foodrecipes.data.database.RecipesDao
 import com.norm.foodrecipes.data.database.entities.FavoritesEntity
+import com.norm.foodrecipes.data.database.entities.FoodJokeEntity
 import com.norm.foodrecipes.data.database.entities.RecipesEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -25,6 +26,13 @@ class LocalDataSource @Inject constructor(
     }
 
     /**
+     * Read food joke.
+     */
+    fun readFoodJoke(): Flow<List<FoodJokeEntity>> {
+        return recipesDao.readFoodJoke()
+    }
+
+    /**
      * Insert all recipes from api to recipe table.
      */
     suspend fun insertRecipes(recipesEntity: RecipesEntity) {
@@ -36,6 +44,13 @@ class LocalDataSource @Inject constructor(
      */
     suspend fun insertFavoriteRecipe(favoritesEntity: FavoritesEntity) {
         recipesDao.insertFavoriteRecipe(favoritesEntity)
+    }
+
+    /**
+     * Insert food joke.
+     */
+    suspend fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) {
+        recipesDao.insertFoodJoke(foodJokeEntity)
     }
 
     /**

@@ -50,6 +50,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
 
         setHasOptionsMenu(true)
@@ -112,17 +113,22 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     /** load recipes data from local or remote */
     private fun loadRecipes() {
         lifecycleScope.launch {
-            mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { rows ->
-                if (rows.isNotEmpty() && !args.backFromBottomSheet) {
-                    Log.d("RecipesFragment", "readRecipes() called!")
+            // todo: handle view's lifecycle owner when view is null
+            try {
+                mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { rows ->
+                    if (rows.isNotEmpty() && !args.backFromBottomSheet) {
+                        Log.d("RecipesFragment", "readRecipes() called!")
 
-                    // must have one row only.
-                    mAdapter.setData(rows[0].foodRecipe)
-                    hideShimmerEffect()
-                } else {
-                    requestApiData()
-                }
-            })
+                        // must have one row only.
+                        mAdapter.setData(rows[0].foodRecipe)
+                        hideShimmerEffect()
+                    } else {
+                        requestApiData()
+                    }
+                })
+            } catch (e: Exception) {
+                Log.d("RecipesFragment", e.message.toString())
+            }
         }
     }
 
