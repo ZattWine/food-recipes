@@ -64,10 +64,8 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.details_menu, menu)
-
         val menuItem = menu?.findItem(R.id.save_to_favorite_menu)
         checkSavedRecipe(menuItem!!)
-
         return true
     }
 
@@ -87,9 +85,11 @@ class DetailsActivity : AppCompatActivity() {
             try {
                 for (savedRecipe in rows) {
                     if (savedRecipe.result.id == args.result.id) {
+                        Log.d("checkSavedRecipe", "${savedRecipe.result.id} = ${args.result.id}")
                         changeMenuItemIconColor(menuItem, R.color.yellow)
                         savedRecipeId = savedRecipe.id
                         recipeSaved = true
+                        break
                     } else {
                         changeMenuItemIconColor(menuItem, R.color.white)
                     }

@@ -29,51 +29,59 @@ class OverviewFragment : Fragment() {
         val args = arguments
         val myBundle: Result? = args?.getParcelable(RECIPE_BUNDLE_KEY)
 
-        binding.imageView.load(myBundle?.image) {
-            crossfade(600)
-            error(R.drawable.ic_error_placeholder)
-        }
-        binding.titleTextView.text = myBundle?.title
-        binding.likesTextView.text = myBundle?.aggregateLikes.toString()
-        binding.timeTextView.text = myBundle?.readyInMinutes.toString()
+        with(binding) {
+            imageView.load(myBundle?.image) {
+                crossfade(600)
+                error(R.drawable.ic_error_placeholder)
+            }
+            titleTextView.text = myBundle?.title
+            likesTextView.text = myBundle?.aggregateLikes.toString()
+            timeTextView.text = myBundle?.readyInMinutes.toString()
 
-        myBundle?.summary.let {
-            val summary = Jsoup.parse(it).toString()
-            // binding.summaryTextView.text = strSummary
-            binding.summaryWebView.webViewClient = object : WebViewClient() {}
-            binding.summaryWebView.loadData(summary, "text/html; charset=utf-8", "UTF-8")
-        }
+            myBundle?.summary.let {
+                val summary = Jsoup.parse(it).toString()
+                // binding.summaryTextView.text = strSummary
+                summaryWebView.webViewClient = object : WebViewClient() {}
+                summaryWebView.loadData(summary, "text/html; charset=utf-8", "UTF-8")
+            }
 
-        if (myBundle?.vegetarian == true) {
-            binding.vegetarianImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-            binding.vegetarianTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-        }
+            if (myBundle?.vegetarian == true) {
+                vegetarianImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                vegetarianTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            }
 
-        if (myBundle?.vegan == true) {
-            binding.veganImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-            binding.veganTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-        }
+            if (myBundle?.vegan == true) {
+                veganImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                veganTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            }
 
-        if (myBundle?.glutenFree == true) {
-            binding.glutenFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-            binding.glutenFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-        }
+            if (myBundle?.glutenFree == true) {
+                glutenFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                glutenFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            }
 
-        if (myBundle?.dairyFree == true) {
-            binding.dairyFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-            binding.dairyFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-        }
+            if (myBundle?.dairyFree == true) {
+                dairyFreeImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                dairyFreeTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            }
 
-        if (myBundle?.veryHealthy == true) {
-            binding.healthyImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-            binding.healthyTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
-        }
+            if (myBundle?.veryHealthy == true) {
+                healthyImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                healthyTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            }
 
-        if (myBundle?.cheap == true) {
-            binding.cheapImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
-            binding.cheapTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            if (myBundle?.cheap == true) {
+                cheapImageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                cheapTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            }
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // to avoid memory leak
+        _binding = null
     }
 }

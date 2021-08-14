@@ -92,4 +92,10 @@ class RecipesBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // to avoid memory leak
+        _binding = null
+    }
+
 }
