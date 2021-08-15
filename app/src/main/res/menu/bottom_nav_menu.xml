@@ -13,4 +13,8 @@
         android:title="@string/joke"
         android:icon="@drawable/ic_joke" />
 
+    <item android:id="@+id/settingsFragment"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings" />
+
 </menu>

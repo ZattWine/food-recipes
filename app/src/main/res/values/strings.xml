@@ -50,4 +50,6 @@
     <string name="delete_all">Delete All</string>
     <string name="error">Error</string>
     <string name="share">Share</string>
+    <string name="licenses">Licenses</string>
+    <string name="settings">Settings</string>
 </resources>

@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Others"
+        app:key="others_category">
+
+        <Preference
+            app:key="licenses"
+            app:summary="Show open source licenses."
+            app:title="oss"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

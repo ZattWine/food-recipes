@@ -56,4 +56,8 @@
             android:name="result"
             app:argType="com.norm.foodrecipes.models.Result" />
     </activity>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.norm.foodrecipes.ui.fragments.settings.SettingsFragment"
+        android:label="Settings" />
 </navigation>
